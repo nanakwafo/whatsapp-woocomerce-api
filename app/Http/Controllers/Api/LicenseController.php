@@ -27,7 +27,7 @@ class LicenseController extends Controller
 
         if (! $license) {
             return response()->json(['valid' => false, 'message' => 'License not found.'], 200);
-        }    
+        }
 
         if ($license->isValidForDomain($domain)) {
             return response()->json([

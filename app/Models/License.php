@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Services\LicenseKeyService;
 class License extends Model
 {
     protected $fillable = [
@@ -33,5 +33,29 @@ class License extends Model
             return stripos($domain, $this->domain) !== false;
         }
         return true;
+    }
+    public function revoke()
+    {
+        $this->update(['status' => 'revoked']);
+    }
+
+    public function restore()
+    {
+        $this->update(['status' => 'active']);
+    }
+
+    public function regenerate()
+    {
+        $this->update(['key' => LicenseKeyService::generate()]);
+    }
+
+    public function markExpired()
+    {
+        $this->update(['status' => 'expired']);
+    }
+
+    public function isActive()
+    {
+        return $this->status === 'active';
     }
 }
