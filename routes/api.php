@@ -1,6 +1,8 @@
 <?php
 use App\Http\Controllers\Api\LicenseAdminController;
 use App\Http\Controllers\Api\LicenseController;
+
+use App\Http\Controllers\LeadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //})->middleware('auth:sanctum');
 Route::post('/check-license', [LicenseController::class, 'check']);
-
+Route::post('/leads', [LeadController::class, 'store']);
 //Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::get('/licenses', [LicenseAdminController::class, 'index']);
