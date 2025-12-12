@@ -9,5 +9,6 @@ Route::get('/', function () {
 });
 
 Route::get('/download-plugin', function () {
-
+    $path = public_path('whatsapp-shop-ai.zip');
+    return response()->download($path);
 });
