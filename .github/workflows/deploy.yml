@@ -1,0 +1,47 @@
+name: Deploy Laravel to Ubuntu Server
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install SSH client + rsync + sshpass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass rsync
+
+      - name: Upload files to server
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz --delete \
+          --exclude ".env" \
+          --exclude "vendor" \
+          --exclude "node_modules" \
+          ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/waorders/whatsapp-woocomerce-api
+
+      - name: Run server deployment commands
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          cd /var/www/waorders/whatsapp-woocomerce-api
+
+          # Install composer dependencies
+          composer install --no-dev --optimize-autoloader
+
+          # Laravel setup
+          php artisan key:generate --force || true
+          php artisan migrate --force
+          php artisan optimize:clear
+          php artisan optimize
+
+          # Permissions
+          chown -R www-data:www-data /var/www/waorders/whatsapp-woocomerce-api
+          chmod -R 775 storage bootstrap/cache
+
+          exit
+          EOF
