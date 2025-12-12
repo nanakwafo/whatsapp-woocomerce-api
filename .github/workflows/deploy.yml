@@ -20,7 +20,7 @@ jobs:
       - name: Upload files to server
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz --delete \
-          -e "ssh -o StrictHostKeyChecking=no" \
+          -e "ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no" \
           --exclude ".env" \
           --exclude "vendor" \
           --exclude "node_modules" \
