@@ -1,0 +1,158 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "WhatsApp WooCommerce API",
+    "version": "1.0.0",
+    "description": "Minimal OpenAPI spec for local testing of the API endpoints."
+  },
+  "servers": [{ "url": "/" }],
+  "paths": {
+    "/api/check-license": {
+      "post": {
+        "summary": "Check a license key",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "license_key": { "type": "string" },
+                  "domain": { "type": "string" }
+                },
+                "required": ["license_key"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "License check result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valid": { "type": "boolean" },
+                    "expires_at": { "type": ["string", "null"] },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/leads": {
+      "post": {
+        "summary": "Create a lead",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "store_url": { "type": "string" },
+                  "allow_marketing": { "type": "boolean" }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "download_url": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/licenses": {
+      "get": {
+        "summary": "List licenses",
+        "parameters": [{
+          "name": "status",
+          "in": "query",
+          "schema": { "type": "string" }
+        },{
+          "name": "domain",
+          "in": "query",
+          "schema": { "type": "string" }
+        }],
+        "responses": {
+          "200": { "description": "Paged list of licenses" }
+        }
+      },
+      "post": {
+        "summary": "Create a license",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "domain": { "type": "string" },
+                  "days_valid": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "License created" } }
+      }
+    },
+    "/api/admin/licenses/{license}": {
+      "get": {
+        "summary": "Get a license",
+        "parameters": [{
+          "name": "license",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "integer" }
+        }],
+        "responses": { "200": { "description": "License detail" } }
+      },
+      "put": {
+        "summary": "Update a license",
+        "parameters": [{
+          "name": "license",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "integer" }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "domain": { "type": "string" },
+                  "status": { "type": "string" },
+                  "expires_at": { "type": "string", "format": "date" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Updated" } }
+      }
+    },
+    "/api/admin/licenses/{license}/regenerate": { "post": { "summary": "Regenerate key", "parameters": [{"name":"license","in":"path","required":true,"schema":{"type":"integer"}}], "responses": {"200": {"description":"Regenerated"}} } },
+    "/api/admin/licenses/{license}/revoke": { "post": { "summary": "Revoke license", "parameters": [{"name":"license","in":"path","required":true,"schema":{"type":"integer"}}], "responses": {"200": {"description":"Revoked"}} } },
+    "/api/admin/licenses/{license}/restore": { "post": { "summary": "Restore license", "parameters": [{"name":"license","in":"path","required":true,"schema":{"type":"integer"}}], "responses": {"200": {"description":"Restored"}} } }
+  }
+}

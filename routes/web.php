@@ -16,3 +16,7 @@ Route::get('/download-plugin', function () {
 
     return response()->download($path);
 });
+
+Route::get('/swagger', function () {
+    return redirect('/swagger/index.html');
+});

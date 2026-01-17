@@ -2,7 +2,7 @@
 use App\Http\Controllers\Api\LicenseAdminController;
 use App\Http\Controllers\Api\LicenseController;
 
-use App\Http\Controllers\LeadController;
+use App\Http\Controllers\Api\LeadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
