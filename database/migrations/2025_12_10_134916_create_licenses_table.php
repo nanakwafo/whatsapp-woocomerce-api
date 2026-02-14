@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('licenses', function (Blueprint $table) {
             $table->id();
+            $table->string('email');
             $table->string('key')->unique();
+            $table->string('reference')->unique();
             $table->string('status')->default('active'); // active, revoked, expired
             $table->timestamp('expires_at')->nullable();
-            $table->string('domain')->nullable(); // optional single-domain binding
-            $table->json('meta')->nullable();
+            $table->integer('activation_count')->default(0);
+            $table->integer('max_activations')->default(1);
+            $table->json('activated_domains')->nullable();
+            $table->string('first_activated_ip')->nullable();
+            $table->timestamp('first_activated_at')->nullable();
             $table->timestamps();
         });
     }

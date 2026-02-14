@@ -8,17 +8,20 @@ use App\Services\LicenseKeyService;
 class License extends Model
 {
     protected $fillable = [
+        'email',
         'key',
+        'reference',
         'status',
         'expires_at',
-        'domain',
+        'activated_domains',
         'meta',
     ];
 
+   
     protected $casts = [
-        'meta' => 'array',
-        'expires_at' => 'datetime',
-    ];
+    'activated_domains' => 'array',
+    'expires_at' => 'datetime',
+   ];
 
     public function isValidForDomain(?string $domain): bool
     {
@@ -28,7 +31,7 @@ class License extends Model
         if ($this->expires_at && $this->expires_at->isPast()) {
             return false;
         }
-        if ($this->domain && $domain) {
+        if ($this->activated_domains && $domain) {
             // if domain bound, check contains or equals (adjust to your policy)
             return stripos($domain, $this->domain) !== false;
         }

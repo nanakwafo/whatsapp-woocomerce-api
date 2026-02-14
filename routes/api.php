@@ -3,6 +3,8 @@ use App\Http\Controllers\Api\LicenseAdminController;
 use App\Http\Controllers\Api\LicenseController;
 
 use App\Http\Controllers\Api\LeadController;
+use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,7 +12,17 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //})->middleware('auth:sanctum');
 Route::post('/check-license', [LicenseController::class, 'check']);
+Route::post('/api/license/deactivate', [LicenseController::class, 'deactivate']);
+
+
 Route::post('/leads', [LeadController::class, 'store']);
+
+Route::post('/payment/initialize', [PaymentController::class, 'initialize'])->name('payment.initialize');
+Route::get('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+
+
+Route::post('/webhook/paystack', [WebhookController::class, 'handle']);
+
 //Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::get('/licenses', [LicenseAdminController::class, 'index']);
