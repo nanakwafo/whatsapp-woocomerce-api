@@ -177,36 +177,17 @@ class MessageController extends Controller
 
     public function webhook(Request $request)
     {
-        // $message = $request->input('entry.0.changes.0.value.messages.0');
-
-        // if (!$message) {
-        //     return response()->json(['ok' => true]);
-        // }
-
-        // $from = $message['from']; // customer phone
-
-        // WhatsappConversation::updateOrCreate(
-        //     [
-        //         'phone_number' => $from,
-        //     ],
-        //     [
-        //         'last_inbound_at' => now(),
-        //         'session_expires_at' => now()->addHours(24),
-        //     ]
-        // );
-
-        // return response()->json(['ok' => true]);
-
-          // Verification request
-    if ($request->isMethod('get')) {
+        
+       if ($request->isMethod('get')) {
 
         $verifyToken = env('WHATSAPP_VERIFY_TOKEN');
 
-        if (
-            $request->get('hub_mode') === 'subscribe' &&
-            $request->get('hub_verify_token') === $verifyToken
-        ) {
-            return response($request->get('hub_challenge'), 200);
+        $mode = $request->query('hub.mode');
+        $token = $request->query('hub.verify_token');
+        $challenge = $request->query('hub.challenge');
+
+        if ($mode === 'subscribe' && $token === $verifyToken) {
+            return response($challenge, 200);
         }
 
         return response('Verification failed', 403);
