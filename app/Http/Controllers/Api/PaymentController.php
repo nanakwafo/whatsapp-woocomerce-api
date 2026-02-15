@@ -31,8 +31,8 @@ class PaymentController extends Controller
                 'callback_url' => route('payment.callback')
             ]);
 
-         return redirect($response['data']['authorization_url']);
-        // return $response['data']['authorization_url'];
+        // return redirect($response['data']['authorization_url']);
+         return $response['data']['authorization_url'];
     }
     
     public function callback(Request $request)
