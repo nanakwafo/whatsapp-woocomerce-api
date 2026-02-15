@@ -1,22 +1,25 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
- 
 });
 
-Route::get('/download-plugin', function () {
-    $path = public_path('whatsapp-shop-ai.zip');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-    if (!file_exists($path)) {
-        return "FILE NOT FOUND AT: " . $path;
-    }
+Route::middleware(['auth'])->get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    return response()->download($path);
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/swagger', function () {
-    return redirect('/swagger/index.html');
-});
+require __DIR__.'/auth.php';

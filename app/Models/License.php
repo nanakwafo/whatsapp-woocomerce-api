@@ -8,13 +8,13 @@ use App\Services\LicenseKeyService;
 class License extends Model
 {
     protected $fillable = [
+        'user_id',
         'email',
         'key',
         'reference',
         'status',
         'expires_at',
-        'activated_domains',
-        'meta',
+        'activated_domains'
     ];
 
    
@@ -60,5 +60,9 @@ class License extends Model
     public function isActive()
     {
         return $this->status === 'active';
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
