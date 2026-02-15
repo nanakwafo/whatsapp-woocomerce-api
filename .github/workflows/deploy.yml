@@ -34,7 +34,7 @@ jobs:
 
           # Install composer dependencies
           composer install --no-dev --optimize-autoloader
-
+          npm install && npm run build
           # Laravel setup
           php artisan key:generate --force || true
           php artisan migrate --force
