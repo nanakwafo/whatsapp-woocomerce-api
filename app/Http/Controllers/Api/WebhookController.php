@@ -21,11 +21,11 @@ class WebhookController extends Controller
     //
     public function handle(Request $request)
     {
-        // $signature = $request->header('x-paystack-signature');
+        $signature = $request->header('x-paystack-signature');
 
-        // if ($signature !== hash_hmac('sha512', $request->getContent(), env('PAYSTACK_SECRET_KEY'))) {
-        //     abort(403);
-        // }
+        if ($signature !== hash_hmac('sha512', $request->getContent(), env('PAYSTACK_SECRET_KEY'))) {
+            abort(403);
+        }
 
         $event = $request->input('event');
 
@@ -33,11 +33,11 @@ class WebhookController extends Controller
 
             $data = $request->input('data');
 
-$data['status']='success';
+
             if ($data['status'] == 'success') {
-                 $data['customer']['email']='nanamensah1140@gmail.com';
+                
                 $email = $data['customer']['email'];
-              $data['reference']='wsdsddk123dmw'   ; 
+             
                 $reference = $data['reference'];
 
                 // Prevent duplicate licenses
