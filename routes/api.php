@@ -23,10 +23,13 @@ Route::middleware(['waorders.signature'])->group(function () {
 
    //send message where session is handle by backend
    Route::post('/message/sendwhatsapp', [MessageController::class, 'send']);
-   //webhook for receiving messages from whatsapp configured on facebook developer portal
-//    Route::post('/webhook/whatsapp', [MessageController::class, 'webhook']);
-   Route::match(['get', 'post'], '/webhook/whatsapp', [MessageController::class, 'webhook']);
+
 }); 
+
+
+   //webhook for receiving messages from whatsapp configured on facebook developer portal
+
+   Route::match(['get', 'post'], '/webhook/whatsapp', [MessageController::class, 'webhook']);
 
 
 
