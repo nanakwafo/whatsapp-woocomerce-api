@@ -12,6 +12,8 @@ class MessageController extends Controller
 
     public function sendMessage(Request $request)
     {
+        $license_key  = $request->input('license_key');
+        $store_domain =  $request->input('store_domain');
         $phoneId = env('WHATSAPP_PHONE_ID');
         $accessToken = env('WHATSAPP_ACCESS_TOKEN'); 
 
@@ -39,6 +41,8 @@ class MessageController extends Controller
     
     public function sendMessageTemplateWithText(Request $request)
     {
+        $license_key  = $request->input('license_key');
+        $store_domain =  $request->input('store_domain');
         $phoneId = env('WHATSAPP_PHONE_ID');
         $accessToken = env('WHATSAPP_ACCESS_TOKEN'); 
 
