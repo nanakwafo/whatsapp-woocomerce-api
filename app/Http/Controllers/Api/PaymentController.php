@@ -15,7 +15,7 @@ class PaymentController extends Controller
     //
 
     public function initialize(Request $request)
-    {
+    {//return redirect($response['data']['authorization_url']);
         $request->validate([
             'email' => 'required|email'
         ]);
@@ -31,7 +31,7 @@ class PaymentController extends Controller
                 'callback_url' => route('payment.callback')
             ]);
 
-        // return redirect($response['data']['authorization_url']);
+        
          return $response['data']['authorization_url'];
     }
     
