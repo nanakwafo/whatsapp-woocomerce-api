@@ -180,40 +180,40 @@ class MessageController extends Controller
         
        if ($request->isMethod('get')) {
 
-        $verifyToken = env('WHATSAPP_VERIFY_TOKEN');
+        $verifyToken = "waorders_verify_token_224"; //env('WHATSAPP_VERIFY_TOKEN');
 
         $mode = $request->query('hub.mode');
         $token = $request->query('hub.verify_token');
         $challenge = $request->query('hub.challenge');
-
+        
         if ($mode === 'subscribe' && $token === $verifyToken) {
             return response($challenge, 200);
         }
 
         return response('Verification failed', 403);
-    }
+       }
 
     // Handle incoming messages (POST)
-    if ($request->isMethod('post')) {
+        if ($request->isMethod('post')) {
 
-        $message = $request->input('entry.0.changes.0.value.messages.0');
+            $message = $request->input('entry.0.changes.0.value.messages.0');
 
-        if (!$message) {
+            if (!$message) {
+                return response()->json(['ok' => true]);
+            }
+
+            $from = $message['from'];
+
+            WhatsappConversation::updateOrCreate(
+                ['phone_number' => $from],
+                [
+                    'last_inbound_at' => now(),
+                    'session_expires_at' => now()->addHours(24),
+                ]
+            );
+
             return response()->json(['ok' => true]);
         }
-
-        $from = $message['from'];
-
-        WhatsappConversation::updateOrCreate(
-            ['phone_number' => $from],
-            [
-                'last_inbound_at' => now(),
-                'session_expires_at' => now()->addHours(24),
-            ]
-        );
-
-        return response()->json(['ok' => true]);
-    }
     }
 }
 
