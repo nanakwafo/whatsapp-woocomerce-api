@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\LicenseController;
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\WebhookController;
+use App\Http\Controllers\Api\MessageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,8 +13,12 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //})->middleware('auth:sanctum');
 Route::post('/check-license', [LicenseController::class, 'check']);
-Route::post('/api/license/deactivate', [LicenseController::class, 'deactivate']);
+Route::post('/license/deactivate', [LicenseController::class, 'deactivate']);
 
+
+
+Route::post('/message/send', [MessageController::class, 'sendMessage']);
+Route::post('/message/send-template', [MessageController::class, 'sendMessageTemplateWithText']);
 
 Route::post('/leads', [LeadController::class, 'store']);
 
