@@ -11,6 +11,10 @@ export default {
 
     theme: {
         extend: {
+             colors: {
+        primary: "#25D366",   // WhatsApp green example
+        primaryDark: "#1da851",
+      },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
