@@ -180,13 +180,20 @@ class MessageController extends Controller
         
        if ($request->isMethod('get')) {
 
-        $verifyToken = "waorders_verify_token_224"; //env('WHATSAPP_VERIFY_TOKEN');
+    
+        $params = $request->query();
+     
+        $mode = $params['hub_mode'] ?? null;
+        $token = $params['hub_verify_token'] ?? null;
+        $challenge = $params['hub_challenge'] ?? null;
 
-        $mode = $request->query('hub.mode');
-        $token = $request->query('hub.verify_token');
-        $challenge = $request->query('hub.challenge');
-        
-        if ($mode === 'subscribe' && $token === $verifyToken) {
+        \Log::info([
+            'mode' => $mode,
+            'token_received' => $token,
+            'expected_token' => "waorders_verify_token_224",
+        ]);
+
+        if ($mode === 'subscribe' && $token === "waorders_verify_token_224") {
             return response($challenge, 200);
         }
 
