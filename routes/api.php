@@ -12,14 +12,17 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/user', function (Request $request) {
 //    return $request->user();
 //})->middleware('auth:sanctum');
-Route::post('/check-license', [LicenseController::class, 'check']);
+
+Route::middleware(['waorders.signature'])->group(function () {
+
+   Route::post('/check-license', [LicenseController::class, 'check']);
+   Route::post('/message/send', [MessageController::class, 'sendMessage']);
+   Route::post('/message/send-template', [MessageController::class, 'sendMessageTemplateWithText']);
+}); 
+
+
+
 Route::post('/license/deactivate', [LicenseController::class, 'deactivate']);
-
-
-
-Route::post('/message/send', [MessageController::class, 'sendMessage']);
-Route::post('/message/send-template', [MessageController::class, 'sendMessageTemplateWithText']);
-
 Route::post('/leads', [LeadController::class, 'store']);
 
 Route::post('/payment/initialize', [PaymentController::class, 'initialize'])->name('payment.initialize');
