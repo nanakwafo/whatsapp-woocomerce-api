@@ -16,8 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['waorders.signature'])->group(function () {
 
    Route::post('/check-license', [LicenseController::class, 'check']);
+
+   //send message  where session is handled in plugin
    Route::post('/message/send', [MessageController::class, 'sendMessage']);
    Route::post('/message/send-template', [MessageController::class, 'sendMessageTemplateWithText']);
+
+   //send message where session is handle by backend
+   Route::post('/message/send', [MessageController::class, 'send']);
+   //webhook for receiving messages from whatsapp configured on facebook developer portal
+   Route::post('/webhook/whatsapp', [MessageController::class, 'webhook']);
 }); 
 
 
