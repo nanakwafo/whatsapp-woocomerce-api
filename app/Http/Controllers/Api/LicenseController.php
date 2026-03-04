@@ -92,7 +92,8 @@ class LicenseController extends Controller
 
         return response()->json([
             'valid' => true,
-            'expires_at' => $license->expires_at->toDateString()
+            'expires_at' => $license->expires_at->toDateString(),
+            'api_secret' => $license->api_secret,
         ]);
 
 

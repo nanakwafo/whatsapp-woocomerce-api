@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;    
+use Illuminate\Support\Str;
 
 class WebhookController extends Controller
 {
@@ -59,7 +60,8 @@ class WebhookController extends Controller
                     'status' => 'active',
                     'reference' => $reference,
                     'key' => $licenseKey,
-                    'expires_at' => now()->addYear()
+                    'expires_at' => now()->addYear(),
+                    'api_secret' => hash('sha256', Str::random(40)),
                 ]);
                 // Send password setup link
                 Password::sendResetLink([
