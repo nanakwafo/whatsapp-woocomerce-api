@@ -14,7 +14,8 @@ class License extends Model
         'reference',
         'status',
         'expires_at',
-        'activated_domains'
+        'activated_domains',
+        'api_secret',
     ];
 
    
